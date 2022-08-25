@@ -258,24 +258,42 @@ go
 -- Beverages    Chai              18.00
 -- Beverages    Chang             19.00
 -- Beverages    Chartreuse verte  18.00
+
+--go
+--Select Top 1000000 
+--  C.CategoryName
+-- ,P.ProductName
+-- ,P.UnitPrice
+-- From vCategories as C
+--  Inner Join vProducts as P
+--   On C.CategoryID = P.CategoryID
+-- go
+
+--go
+--Select Top 1000000 
+--  C.CategoryName
+-- ,P.ProductName
+-- ,P.UnitPrice
+-- From vCategories as C
+--  Inner Join vProducts as P
+--   On C.CategoryID = P.CategoryID
+-- Order By CategoryName, ProductName;
+--go
+
 go
 Create View vProductsByCategories
-WITH SCHEMABINDING
  AS 
-Select 
-  CategoryName
- ,ProductName
- ,UnitPrice
- From [dbo].[Products]
- Inner Join [dbo].[Categories]
-  On Products.CategoryID = Categories.CategoryID;
+Select Top 1000000 
+  C.CategoryName
+ ,P.ProductName
+ ,P.UnitPrice
+ From vCategories as C
+  Inner Join vProducts as P
+   On C.CategoryID = P.CategoryID
+ Order By C.CategoryName, P.ProductName;
 go
 
-go
-Select * From vProductsByCategories 
- Order By CategoryName, ProductName, UnitPrice;
-go
-
+--Select * From vProductsByCategories 
 
 
 
@@ -292,21 +310,45 @@ go
 -- Aniseed Syrup	2017-02-01	  23
 -- Aniseed Syrup	2017-03-01	  33
 
+--go
+--Select
+-- P.ProductName
+-- ,I.InventoryDate
+-- ,I.[Count]
+-- From vProducts as P
+-- INNER JOIN vInventories as I
+--  On P.ProductID = I.ProductID
+--go
+
+--go
+--Create -- Drop
+--View vInventoriesByProductsByDates
+-- AS 
+--Select Top 1000000
+-- P.ProductName
+-- ,I.InventoryDate
+-- ,I.[Count]
+-- From vProducts as P
+-- INNER JOIN vInventories as I
+--  On P.ProductID = I.ProductID
+--go
+
 go
-Create View vInventoriesByProductsByDates
-WITH SCHEMABINDING
+Create --Drop
+View vInventoriesByProductsByDates
  AS 
-Select
- [ProductName]
- ,[InventoryDate]
- ,[Count] 
- From [dbo].[Products] 
- INNER JOIN [dbo].[Inventories]
-  On Products.ProductID = Inventories.ProductID
+Select Top 1000000 
+ P.ProductName
+ ,I.InventoryDate
+ ,I.[Count]
+ From vProducts as P
+ INNER JOIN vInventories as I
+  On P.ProductID = I.ProductID
+ Order By P.ProductName, I.InventoryDate, I.[Count]
 go
 
 Select * From vInventoriesByProductsByDates
- Order By [InventoryDate], [ProductName], [Count]
+ 
 
 -- Question 5 (10% pts): How can you create a view to show a list of Inventory Dates 
 -- and the Employee that took the count?
@@ -319,21 +361,40 @@ Select * From vInventoriesByProductsByDates
 -- 2017-02-01	    Robert King
 -- 2017-03-01	    Anne Dodsworth
 
+--Select Distinct Top 1000000 
+-- I.InventoryDate
+-- ,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName 
+--From vInventories as I 
+-- Inner Join vEmployees as E 
+--  On I.EmployeeID = E.EmployeeID;
+--go 
+
+--go
+--Create View vInventoriesByEmployeesByDates
+-- AS 
+--Select Distinct Top 1000000 
+-- I.InventoryDate
+-- ,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName 
+--From vInventories as I 
+-- Inner Join vEmployees as E 
+--  On I.EmployeeID = E.EmployeeID;
+--go 
+
 go
-Create View vInventoriesByEmployeesByDates
-WITH SCHEMABINDING
+Create --Drop
+View vInventoriesByEmployeesByDates
  AS 
-Select Distinct
- InventoryDate
- ,EmployeeFirstName + ' ' + EmployeeLastName as EmployeeName 
-From [dbo].[Inventories] 
- Inner Join [dbo].[Employees] 
-  On Inventories.EmployeeID = Employees.EmployeeID;
+Select Distinct Top 1000000 
+ I.InventoryDate
+ ,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName 
+ From vInventories as I 
+ Inner Join vEmployees as E 
+  On I.EmployeeID = E.EmployeeID
+Order By InventoryDate;
 go 
 
-Select * From vInventoriesByEmployeesByDates
- Order By InventoryDate;
-go
+--Select * From vInventoriesByEmployeesByDates
+--go
 
 -- Question 6 (10% pts): How can you create a view show a list of Categories, Products, 
 -- and the Inventory Date and Count of each product?
@@ -349,25 +410,54 @@ go
 -- Beverages	  Chang	      2017-02-01	  27
 -- Beverages	  Chang	      2017-03-01	  37
 
+--go
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--From vCategories as C
+-- Inner Join vProducts as P 
+--  On C.CategoryID = P.CategoryID
+-- Inner Join vInventories as I
+--  On  I.ProductID = P.ProductID
+--go
+
+--go
+--Create --Drop
+--View vInventoriesByProductsByCategories
+-- AS 
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--From vCategories as C
+-- Inner Join vProducts as P 
+--  On C.CategoryID = P.CategoryID
+-- Inner Join vInventories as I
+--  On  I.ProductID = P.ProductID
+--go
+
 go
-Create View vInventoriesByProductsByCategories
-WITH SCHEMABINDING
+Create --Drop
+View vInventoriesByProductsByCategories
  AS 
-Select 
-[CategoryName]
-,[ProductName]
-,[InventoryDate]
-,[Count]
-From [dbo].[Categories]
- Inner Join [dbo].[Products] 
-  On Categories.CategoryID = Products.CategoryID
- Inner Join [dbo].[Inventories]
-  On  Inventories.ProductID = Products.ProductID;
+Select Top 1000000
+C.CategoryName
+,P.ProductName
+,I.InventoryDate
+,I.[Count]
+From vCategories as C
+ Inner Join vProducts as P 
+  On C.CategoryID = P.CategoryID
+ Inner Join vInventories as I
+  On  I.ProductID = P.ProductID
+Order By C.CategoryName, P.ProductName, I.InventoryDate, I.[Count];
 go
 
-Select * From vInventoriesByProductsByCategories
- Order By [CategoryName],[ProductName],[InventoryDate],[Count];
-go
+--Select * From vInventoriesByProductsByCategories;
+--go
 
 
 -- Question 7 (10% pts): How can you create a view to show a list of Categories, Products, 
@@ -384,28 +474,61 @@ go
 -- Beverages	  Ipoh Coffee	      2017-01-01	  17	  Steven Buchanan
 -- Beverages	  Lakkalikööri	      2017-01-01	  57	  Steven Buchanan
 
-go
-Create View vInventoriesByProductsByEmployees
-WITH SCHEMABINDING
+--go
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--,E.[EmployeeFirstName] + ' ' + E.[EmployeeLastName] as EmployeeName
+--From vCategories as C
+-- Inner Join vProducts as P 
+--  On C.CategoryID = P.CategoryID
+-- Inner Join vInventories as I
+--  On  I.ProductID = P.ProductID
+-- Inner Join vEmployees as E 
+--  On E.EmployeeID = I.EmployeeID;
+--go
+
+--Create --Drop
+--View vInventoriesByProductsByEmployees
+-- AS 
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--,E.[EmployeeFirstName] + ' ' + E.[EmployeeLastName] as EmployeeName
+--From vCategories as C
+-- Inner Join vProducts as P 
+--  On C.CategoryID = P.CategoryID
+-- Inner Join vInventories as I
+--  On  I.ProductID = P.ProductID
+-- Inner Join vEmployees as E 
+--  On E.EmployeeID = I.EmployeeID
+--go
+
+Create --Drop
+View vInventoriesByProductsByEmployees
  AS 
-Select 
-[CategoryName]
-,[ProductName]
-,[InventoryDate]
-,[Count]
-,[EmployeeFirstName] + ' ' + [EmployeeLastName] as [EmployeeName]
-From [dbo].[Categories]
- Inner Join [dbo].[Products] 
-  On Categories.CategoryID = Products.CategoryID
- Inner Join [dbo].[Inventories] 
-  On  Inventories.ProductID = Products.ProductID
- Inner Join [dbo].[Employees] 
-  On Employees.EmployeeID = Inventories.EmployeeID
+Select Top 1000000
+C.CategoryName
+,P.ProductName
+,I.InventoryDate
+,I.[Count]
+,E.[EmployeeFirstName] + ' ' + E.[EmployeeLastName] as EmployeeName
+From vCategories as C
+ Inner Join vProducts as P 
+  On C.CategoryID = P.CategoryID
+ Inner Join vInventories as I
+  On  I.ProductID = P.ProductID
+ Inner Join vEmployees as E 
+  On E.EmployeeID = I.EmployeeID
+Order By [InventoryDate], [CategoryName], [ProductName], [EmployeeName];
 go
 
-Select * From vInventoriesByProductsByEmployees
- Order By [InventoryDate], [CategoryName], [ProductName], [EmployeeName];
-go
+--Select * From vInventoriesByProductsByEmployees;
+--go
 
 -- Question 8 (10% pts): How can you create a view to show a list of Categories, Products, 
 -- the Inventory Date and Count of each product, and the Employee who took the count
@@ -421,28 +544,66 @@ go
 -- Beverages	  Chai	      2017-03-01	  59	  Anne Dodsworth
 -- Beverages	  Chang	      2017-03-01	  37	  Anne Dodsworth
 
+--go
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName
+--From vCategories as C
+-- Inner Join vProducts as P
+--  On C.CategoryID = P.CategoryID
+-- Join vInventories as I
+--  On  I.ProductID = P.ProductID
+-- Join vEmployees as E
+--  On E.EmployeeID = I.EmployeeID
+--Where I.ProductID In (Select ProductID From vProducts Where ProductName In ('Chai', 'Chang'));
+--go
+
+--go
+--Create --Drop
+--View vInventoriesForChaiAndChangByEmployees
+-- AS 
+--Select Top 1000000
+--C.CategoryName
+--,P.ProductName
+--,I.InventoryDate
+--,I.[Count]
+--,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName
+--From vCategories as C
+-- Inner Join vProducts as P
+--  On C.CategoryID = P.CategoryID
+-- Join vInventories as I
+--  On  I.ProductID = P.ProductID
+-- Join vEmployees as E
+--  On E.EmployeeID = I.EmployeeID
+--Where I.ProductID In (Select ProductID From vProducts Where ProductName In ('Chai', 'Chang'));
+--go
+
 go
-Create View vInventoriesForChaiAndChangByEmployees
+Create --Drop
+View vInventoriesForChaiAndChangByEmployees
  AS 
-Select 
-[CategoryName]
-,[ProductName]
-,[InventoryDate]
-,[Count]
-,[EmployeeFirstName] + ' ' + [EmployeeLastName] as EmployeeName
-From dbo.Categories 
- Inner Join dbo.Products 
-  On Categories.CategoryID = Products.CategoryID
- Join dbo.Inventories
-  On  Inventories.ProductID = Products.ProductID
- Join dbo.Employees
-  On Employees.EmployeeID = Inventories.EmployeeID
-Where Inventories.ProductID In (Select [ProductID] From [Products] Where ProductName In ('Chai', 'Chang'));
+Select Top 1000000
+C.CategoryName
+,P.ProductName
+,I.InventoryDate
+,I.[Count]
+,E.EmployeeFirstName + ' ' + E.EmployeeLastName as EmployeeName
+From vCategories as C
+ Inner Join vProducts as P
+  On C.CategoryID = P.CategoryID
+ Join vInventories as I
+  On  I.ProductID = P.ProductID
+ Join vEmployees as E
+  On E.EmployeeID = I.EmployeeID
+Where I.ProductID In (Select ProductID From vProducts Where ProductName In ('Chai', 'Chang'))
+Order By 3, 1, 2, 4;
 go
 
-
-Select * From vInventoriesForChaiAndChangByEmployees
- Order By 3, 1, 2, 4
+--Select * From vInventoriesForChaiAndChangByEmployees
+--go
 
 -- Question 9 (10% pts): How can you create a view to show a list of Employees and the Manager who manages them?
 -- Order the results by the Manager's name!
@@ -459,20 +620,43 @@ Select * From vInventoriesForChaiAndChangByEmployees
 -- Steven Buchanan	Michael Suyama
 -- Steven Buchanan	Robert King
 
+--go
+--Select Top 1000000
+-- M.EmployeeFirstName + ' ' + M.EmployeeLastName as Manager
+--,E.EmployeeFirstName + ' ' + E.EmployeeLastName as Employee
+--From vEmployees as E
+--Inner Join vEmployees as M
+-- On M.EmployeeID = E.ManagerID 
+--go
+
+--go
+--Create --Drop
+--View vEmployeesByManager
+-- AS
+--Select Top 1000000
+-- M.EmployeeFirstName + ' ' + M.EmployeeLastName as Manager
+--,E.EmployeeFirstName + ' ' + E.EmployeeLastName as Employee
+--From vEmployees as E
+--Inner Join vEmployees as M
+-- On M.EmployeeID = E.ManagerID;
+--go
+
 go
-Create View vEmployeesByManager
+Create --Drop
+View vEmployeesByManager
  AS
-Select
- Manager.EmployeeFirstName + ' ' + Manager.EmployeeLastName as Manager
-,Employee.EmployeeFirstName + ' ' + Employee.EmployeeLastName as Employee
-From Employees as Employee
-Inner Join Employees as Manager  
- On Manager.EmployeeID = Employee.ManagerID 
-Go
+Select Top 1000000
+ M.EmployeeFirstName + ' ' + M.EmployeeLastName as Manager
+,E.EmployeeFirstName + ' ' + E.EmployeeLastName as Employee
+From vEmployees as E
+Inner Join vEmployees as M
+ On M.EmployeeID = E.ManagerID 
+Order by Manager, Employee;
+go
  
 
-Select * From vEmployeesByManager
- Order by 1,2;
+--Select * From vEmployeesByManager;
+--go
 
 -- Question 10 (20% pts): How can you create one view to show all the data from all four 
 -- BASIC Views? Also show the Employee's Manager Name and order the data by 
@@ -494,31 +678,63 @@ Select * From vEmployeesByManager
 -- 1	          Beverages	    34	        Sasquatch Ale	      14.00	    188	        2017-03-01	  131	  9	          Anne Dodsworth
 
 
+--go
+--Select Top 1000000
+-- C.CategoryID
+--,C.CategoryName
+--,P.ProductID
+--,P.ProductName
+--,P.UnitPrice
+--,I.InventoryID
+--,I.InventoryDate
+--,I.[Count]
+--,E.EmployeeID
+--,E.EmployeeFirstName + ' ' + E.EmployeeLastName as Employee
+--,M.EmployeeFirstName + ' ' + M.EmployeeLastName as Manager
+--From 
+-- vCategories as C
+-- Inner Join vProducts as P
+--  On C.CategoryID = P.CategoryID
+-- Inner Join vInventories as I
+--  On P.ProductID = I.ProductID
+-- Inner Join vEmployees as E
+--  On I.EmployeeID = E.EmployeeID
+-- Inner join vEmployees as M
+--  On E.ManagerID = M.EmployeeID
+--Order by CategoryName, ProductName, InventoryID, Employee;
+--go
+
 go
-Create View vInventoriesByProductsByCategoriesByEmployees
+Create --Drop
+View vInventoriesByProductsByCategoriesByEmployees
  AS 
-Select 
-vCategories.CategoryID
-,vCategories.CategoryName
-,vProducts.ProductID
-,vProducts.ProductName
-,vProducts.UnitPrice
-,vInventories.InventoryID
-,vInventories.InventoryDate
-,[vInventories].[Count]
-,vEmployees.EmployeeID
-,vEmployeesByManager.Employee
-,vEmployeesByManager.Manager
+Select Top 1000000
+ C.CategoryID
+,C.CategoryName
+,P.ProductID
+,P.ProductName
+,P.UnitPrice
+,I.InventoryID
+,I.InventoryDate
+,I.[Count]
+,E.EmployeeID
+,E.EmployeeFirstName + ' ' + E.EmployeeLastName as Employee
+,M.EmployeeFirstName + ' ' + M.EmployeeLastName as Manager
 From 
- [dbo].[vCategories]
-,[dbo].[vProducts]
-,[dbo].[vInventories]
-,[dbo].[vEmployees]
-,[dbo].[vEmployeesByManager]
+ vCategories as C
+ Inner Join vProducts as P
+  On C.CategoryID = P.CategoryID
+ Inner Join vInventories as I
+  On P.ProductID = I.ProductID
+ Inner Join vEmployees as E
+  On I.EmployeeID = E.EmployeeID
+ Inner join vEmployees as M
+  On E.ManagerID = M.EmployeeID
+Order by C.CategoryName, P.ProductName, I.InventoryID, Employee;
 go
 
-Select * From vInventoriesByProductsByCategoriesByEmployees
- Order by CategoryName, ProductName, InventoryID, Employee
+Select * From vInventoriesByProductsByCategoriesByEmployees;
+go
 
 
 -- Test your Views (NOTE: You must change the names to match yours as needed!)
